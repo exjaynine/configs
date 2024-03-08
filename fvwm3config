@@ -1,0 +1,218 @@
+#This config file is organized as follows:
+#Functions
+#Styles #Colorsets
+#Menus
+#Bindings
+#Decor
+#Modules
+
+
+#!---------------------------------------!#
+
+##General##
+DeskTopSize 0 0
+
+MenuStyle * Font "xft:3270-Regular:size=14"
+WindowFont "xft:3270-Regular:size=14"
+
+
+##Functions##
+#Pesky focus theft
+DestroyFunc EWMHActivateWindowFunc
+
+#Evil function.
+DestroyFunc UrgencyFunc
+
+
+#Startup AND Init
+DestroyFunc StartFunction
+AddToFunc StartFunction
++ I Test (Init) Exec picom -b
++ I Test (Init) Exec hsetroot -solid "#3B6EA5"
++ I Test (Init) Exec xfce4-panel --disable-wm-check --sm-client-disable
++ I Test (Init) Exec lxpolkit
++ I Test (Init) Exec nm-applet
++ I Test (Init) Exec blueman-applet
++ I Test (Init) Exec xss-lock -l -- i3lock --nofork
++ I Test (Init) Exec udiskie --tray --no-automount
++ I Test (Init) Exec xset s off -dpms
++ I Test (Init) Exec /usr/libexec/xdg-desktop-portal --replace
++ I Test (Init) Exec cbatticon
+
+
+#Window Tiling (Thank You Arch Wiki)
+DestroyFunc TileLeft
+AddToFunc TileLeft
++ I ThisWindow (!Shaded, !Iconic) Maximize 50 98
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 +2
+
+DestroyFunc TileRight
+AddToFunc TileRight
++ I ThisWindow (!Shaded, !Iconic) Maximize 50 98
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move -0 +2
+
+DestroyFunc TileTop
+AddToFunc TileTop
++ I ThisWindow (!Shaded, !Iconic) Maximize 98 50
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 +2
+
+DestroyFunc TileBottom
+AddToFunc TileBottom
++ I ThisWindow (!Shaded, !Iconic) Maximize 100 50
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 -0
+
+DestroyFunc TileTopLeft
+AddToFunc TileTopLeft
++ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 +2
+
+DestroyFunc TileTopRight
+AddToFunc TileTopRight
++ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move -0 +2
+
+DestroyFunc TileBottomLeft
+AddToFunc TileBottomLeft
++ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 -0
+
+DestroyFunc TileBottomRight
+AddToFunc TileBottomRight
++ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move -0 -0
+
+DestroyFunc MakeMaximize
+AddToFunc MakeMaximize
++ I ThisWindow (!Shaded, !Iconic) Maximize 100 98
++ I ThisWindow (Maximized, !Shaded, !Iconic) Move -0 +2
+
+#Un-Iconify Double Click
+DestroyFunc UnIconify
+AddToFunc UnIconify
++ D Iconify off
++ D All (CurrentPage, Iconic) PlaceAgain Icon
+
+DestroyFunc MoveWithMouse
+AddToFunc MoveWithMouse
++ "D" Move
+
+
+#Iconify ALL windows
+DestroyFunc IconifyAll
+AddToFunc IconifyAll
+#Restore Window (Add Later)
++ I All (CurrentPage, !Iconic) Iconify
+
+
+
+
+#Vector Buttons
+AddToDecor VectorDecor
++ BorderStyle Simple
++ TitleStyle Centered Height 26 -- Flat
++ ButtonStyle All -- Flat HiddenHandles NoInset
++ ButtonStyle 2 Vector 13 60x20@0 60x40@0 80x40@1 80x60@0 60x60@0 60x80@0 40x80@0 40x60@1 20x60@0 20x40@1 40x40@1 40x20@1 60x20@1
++ ButtonStyle 4  	Vector 16 60x40@1 60x80@0 15x80@0 15x40@1 60x40@1 40x40@1 40x25@1 75x25@1 75x60@0 60x60@0 75x60@0 75x40@0 85x40@0 85x15@0 60x15@1 60x25@1
++ ButtonStyle 1 Vector 12 10x23@0 90x23@0 90x28@0 10x28@1 10x47@1 90x47@0 90x52@0 10x52@1 10x70@2 90x70@0 90x76@0 10x76@1
+
+#Pesky focus theft
+Style * !FPGrabFocus, !FPFocusByProgram
+
+Style "hexchat" !FPFocusByFunction
+
+#Wine is a known issue with FVWM, fixing that
+Style * Lenience
+
+#Icon Box
+Style * IconBox +0 -0 -0 +0
+
+Style * FvwmBorder, FirmBorder, MWMButtons, UseDecor VectorDecor, BorderWidth 5, HandleWidth 5
+#Apply colorsets
+Style * Colorset 02, HilightColorset 01
+
+#Click To Focus
+Style * ClickToFocus
+
+#Decorate sub-windows
+Style * DecorateTransient
+
+Style "xfce4-panel" !Handles, !Title, StaysOnTop \
+        !Borders
+
+#Style * NoIcon
+
+#Emulate MWM
+Emulate Mwm
+
+
+##Colorsets##
+#Active Window 
+Colorset 01 fg black, bg "#DEDAD7"
+
+#Inactive Window
+Colorset 02 fg black, bg "#FEFEFE"
+
+
+##Menus###
+#Root Menu
+AddToMenu RootMenu
++ "Select An Option" Title
++ "Mousepad" Exec mousepad &
++ "Calculator" Exec galculator &
++ "LibreOffice" Exec /home/matthew/APPIMAGES/LibreOffice.appimage &
++ "Firefox-ESR" Exec firefox-esr &
++ "Konsole" Exec konsole &
++ "Dolphin File Manager" Exec dolphin &
++ "Locker" Exec i3lock --nofork
++ "Restart FVWM3" Restart fvwm3
++ "Quit To GDM" Popup QuitMenu
+
+
+
+
+
+#Quit Submenu
+AddToMenu QuitMenu
++ "If you're sure you want to quit, you may do so below" Title
++ "Yes, I want to quit FVWM3." Quit
+
+#Window Operations (Plus Tiling)
+AddToMenu WindowOperations
++ "Tile Window" Title
++ "Tile Left Half" TileLeft
++ "Tile Right Half" TileRight
++ "Tile Top Half" TileTop
++ "Tile Bottom Half" TileBottom
++ "--------------" Nop
++ "Tile Upper Left" TileTopLeft
++ "Tile Upper Right" TileTopRight
++ "Tile Lower Left" TileBottomLeft
++ "Tile Lower Right" TileBottomRight
++ "--------------" Nop
++ "Terminate Application" Close
+
+
+##Bindings##
+#Clicking on the root desktop
+Mouse 0 R A Menu RootMenu
+
+Mouse 0 I A UnIconify
+
+Mouse 0 W 4 MoveWithMouse
+
+#Titlebar
+Mouse 0 4 A Iconify
+Mouse 0 2 A MakeMaximize
+Mouse 0 1 A Menu WindowOperations
+
+
+#Keyboard Shortcuts
+#Activate The RootMenu From Anywhere
+Key r A 4 Menu RootMenu
+
+#Iconify ALL
+Key i A 4 IconifyAll
+
+#Dmenu from anywhere
+Key d A 4 Exec dmenu_run &
+
